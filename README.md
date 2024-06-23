@@ -1,0 +1,2 @@
+# SJTU-SEIEE_Embedded_System_Lab
+上海交通大学电子信息与电气工程学院，嵌入式系统与接口技术实验作业，分为8086实验和ARM实验两部分。8086实验使用Proteus 8，ARM实验使用Keil 5，单片机板卡为TM4C1294NCPDT
