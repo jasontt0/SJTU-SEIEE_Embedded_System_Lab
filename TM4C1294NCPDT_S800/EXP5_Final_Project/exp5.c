@@ -1,8 +1,4 @@
 /*
-杜文浩 522031910254
-嵌入式大作业
-
-上电后姓名、学号按要求闪烁；
 用SW1按键做按键切换，共8个模式，分别对应变量mode=0,1,2,...,8
 
 mode=0对应黑屏，数码管不显示（自己加的），姓名学号闪烁结束后默认为此模式
@@ -135,7 +131,6 @@ void right_shift_slow(void);
 void left_shift_fast(void);
 void right_shift_fast(void);
 
-void init_show(void);
 
 void switch_mode(void);
 void run_mode(void);
@@ -244,8 +239,6 @@ int main(void)
 	SysCtlDelay(60 * (ui32SysClock / 3000)); // 延时>60ms,等待上电完成
 
 	UARTStringPutNOBlocking(UART0_BASE, (uint8_t *)"RESET\r\n");
-
-	init_show();
 
 	while (1)
 	{
@@ -1457,124 +1450,6 @@ void right_shift_fast(void)
 	Delay(10000);
 }
 
-//初始闪烁学号 & 8为LED，姓名
-void init_show(void)
-{
-	int i = 0;
-	for (i = 0; i < 50; i++)
-	{
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7[3]); // write port 1
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x01);	 // write port 2
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0x00); // 亮灯
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7[1]); // write port 1
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x02);	 // write port 2
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0x00);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7[9]);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x04);
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0x00);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7[1]);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x08);
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0x00);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7[0]);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x10);
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0x00);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7[2]);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x20);
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0x00);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7[5]); // write port 1
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x40);	 // write port 2
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0x00);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7[4]); // write port 1
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x80);	 // write port 2
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0x00);
-		Delay(10000);
-	}
-
-	i = 0;
-	for (i = 0; i < 400; i++)
-	{
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, 0x00); // write port 1 i = 0; i < count; i++)
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0xff);
-
-		result = I2C0_WriteByte(PCA9557_I2CADDR, PCA9557_OUTPUT, 0xff);
-		Delay(10000);
-	}
-
-	i = 0;
-	for (i = 0; i < 50; i++)
-	{
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7_name[0]); // write port 1
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x01);		  // write port 2
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7_name[1]); // write port 1
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x02);		  // write port 2
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7_name[2]);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x04);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7_name[3]);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x08);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7_name[4]);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x10);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7_name[5]);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x20);
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7_name[6]); // write port 1
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x40);		  // write port 2
-		Delay(10000);
-
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0);
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT1, seg7_name[7]); // write port 1
-		result = I2C0_WriteByte(TCA6424_I2CADDR, TCA6424_OUTPUT_PORT2, 0x80);		  // write port 2
-		Delay(10000);
-	}
-}
 
 //----------------------------------------------
 void switch_mode(void)
